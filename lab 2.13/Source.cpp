@@ -1,33 +1,46 @@
 #include "Stack.h"
 
-void entryNumber(int* array, int& lenght, int& lenghtStack); void reverseNumber(const Stack& q, int lenghtStack);
+void reverseNumber(const Stack& q); void evenOdd(const Stack& q, int lenght); void clear(Stack& q);
 
-void loopStack(int lenght, int lenghtStack) {
+void loopStack(int& lenght) {
 	Stack q;
 	int choice;
 	while (true) {
-		int* array = (int*)malloc(sizeof(int));
-		printf("Выбор: 1 - Добавить новый элемент; 2 - Удалить элемент; 3 - Вывод числа в обратном порядке; 4 - Выход\n");
+		printf("Выбор: 1 - Добавить новый элемент; 2 - Удалить элемент; 3 - Вывод числа в обратном порядке; 4 - Четное/нечетное; 5 - очистка; 6 - Выход\n");
 		int tmp;
 		scanf_s("%d", &choice);
 
 		switch (choice)
 		{
 		case 1:
-			entryNumber(array, lenght, lenghtStack);
-			for (int i = 0; i < lenght; i++) {
-				push(q, array[i]);
+			int number;
+			printf("Введите число\n"); scanf_s("%d", &number);
+			while (number != 0) {
+				tmp = number % 10;
+				number /= 10;
+				lenght++;
+				push(q, tmp);
 			}
 			break;
 		case 2:
 			tmp = pull(q);
+			if (lenght > 0)
+				lenght--;
 			printf("Удаление элемента %d\n", tmp);
 			break;
 		case 3:
-			reverseNumber(q, lenghtStack);
+			printf("Вывод: ");
+			reverseNumber(q);
 			break;
 		case 4:
-			free(array);
+			printf("Вывод: ");
+			evenOdd(q, lenght);
+			break;
+		case 5:
+			clear(q);
+			printf("Очистка прошла успешно\n");
+			break;
+		case 6:
 			return;
 		}
 
@@ -35,75 +48,62 @@ void loopStack(int lenght, int lenghtStack) {
 	}
 }
 
-void entryNumber(int* array, int &lenght, int& lenghtStack) {
-	int storage;
-	lenght = 0;
-	while (lenght < 2) {
-		lenght = 0;
-		printf("Введите число "); scanf_s("%d", &storage);
-		//Длина числа
-		int tmp2 = storage;
-		while (tmp2 != NULL) {
-			tmp2 = tmp2 / 10;
-			lenght++;
-			lenghtStack++;
-		}
-		if (lenght == 1) {
-			array[0] = storage;
-			lenghtStack++;
-			return;
-		}
-	}
-	//Разложение числа
-	int tmp;
-	for (int i = 0; i < lenght; i++) {
-		tmp = storage % 10;
-		storage = storage / 10;
-		array[i] = tmp;
-	}
-}
-
-void reverseNumber(const Stack& q, int lenghtStack) {
+void reverseNumber(const Stack& q) {
 	if (q.head == NULL) return;
-	int* storageArray = (int*)malloc(sizeof(int));
+	int tmp = 0;
 	ElementS* cur = q.head;
-	lenghtStack = 0;
-	for (int i = 0; cur != NULL; i++, cur = cur->next) {
-		storageArray[i] = cur->data;
-		lenghtStack++;
-	}
-
-	int reverseNumber = storageArray[lenghtStack-1];
-	for (int i = lenghtStack - 1; i > 0; i--) {
-		reverseNumber = (reverseNumber * 10) + storageArray[i - 1];
-	}
-	printf("Число в обратном порядке: %d\n", reverseNumber);
-
-	//free(storageArray);
-}
-
-int main() {
-	system("chcp 1251");
-	int lenght = 0;
 	int lenghtStack = 0;
-	loopStack(lenght, lenghtStack);
-	return 0;
+	int reverseNumber;
+	for (int i = 0; cur != NULL; i++, cur = cur->next) {
+		tmp = (tmp + cur->data) * 10;
+		lenghtStack++;
+		if (cur->next == NULL) tmp /= 10;
+	}
+	if (lenghtStack == 1) {
+		reverseNumber = tmp % 10;
+		printf("Число в обратном порядке: %d\n", reverseNumber); return;
+	}
+	reverseNumber = (tmp % 10) * 10;
+	tmp /= 10;
+	for (int i = 1; i < lenghtStack; i++) {
+		reverseNumber = (reverseNumber + tmp % 10) * 10;
+		tmp /= 10;
+		if (i == lenghtStack - 1) reverseNumber /= 10;
+	}
+
+	printf("Число в обратном порядке: %d\n", reverseNumber);
 }
 
+void evenOdd(const Stack& q, int lenght) {
+	if (lenght <= 2) return;
+	int array[100];
+	ElementS* cur = q.head;
+	for (int i = 0; cur != NULL; cur = cur->next, i++)
+		array[i] = cur->data;
 
-/*//563412
-int main() {
-	int array[6] = { 1,2,3,4,5,6 };
-
-	for (int i = 0; i < 6; i++) {
-		for (int j = 1; j < 6 - 1; j++) {
+	for (int i = 0; i < lenght; i++) {
+		for (int j = 1; j < lenght - 1; j++) {
 			int tmp = array[i];
 			array[i] = array[j];
 			array[j] = tmp;
 		}
 	}
-	
-	for (int i = 0; i < 6; i++) {
+
+	for (int i = 0; i < lenght; i++) {
 		printf("%d", array[i]);
 	}
-}*/
+	printf("\n");
+}
+
+void clear(Stack& q) {
+	if (q.head == NULL) return;
+	for (ElementS* cur = q.head; cur != NULL; cur = cur->next)
+		q.head = q.head->next;
+}
+
+int main() {
+	system("chcp 1251");
+	int lenght = 0;
+	loopStack(lenght);
+	return 0;
+}
