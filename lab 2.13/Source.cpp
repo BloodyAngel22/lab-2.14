@@ -1,7 +1,5 @@
 #include "Stack.h"
 
-void reverseNumber(const Stack& q); void evenOdd(const Stack& q, int lenght); void clear(Stack& q);
-
 void loopStack(int& lenght) {
 	Stack q;
 	int choice;
@@ -29,11 +27,9 @@ void loopStack(int& lenght) {
 			printf("Удаление элемента %d\n", tmp);
 			break;
 		case 3:
-			printf("Вывод: ");
 			reverseNumber(q);
 			break;
 		case 4:
-			printf("Вывод: ");
 			evenOdd(q, lenght);
 			break;
 		case 5:
@@ -46,59 +42,6 @@ void loopStack(int& lenght) {
 
 		printQueue(q);
 	}
-}
-
-void reverseNumber(const Stack& q) {
-	if (q.head == NULL) return;
-	int tmp = 0;
-	ElementS* cur = q.head;
-	int lenghtStack = 0;
-	int reverseNumber;
-	for (int i = 0; cur != NULL; i++, cur = cur->next) {
-		tmp = (tmp + cur->data) * 10;
-		lenghtStack++;
-		if (cur->next == NULL) tmp /= 10;
-	}
-	if (lenghtStack == 1) {
-		reverseNumber = tmp % 10;
-		printf("Число в обратном порядке: %d\n", reverseNumber); return;
-	}
-	reverseNumber = (tmp % 10) * 10;
-	tmp /= 10;
-	for (int i = 1; i < lenghtStack; i++) {
-		reverseNumber = (reverseNumber + tmp % 10) * 10;
-		tmp /= 10;
-		if (i == lenghtStack - 1) reverseNumber /= 10;
-	}
-
-	printf("Число в обратном порядке: %d\n", reverseNumber);
-}
-
-void evenOdd(const Stack& q, int lenght) {
-	if (lenght <= 2) return;
-	int array[100];
-	ElementS* cur = q.head;
-	for (int i = 0; cur != NULL; cur = cur->next, i++)
-		array[i] = cur->data;
-
-	for (int i = 0; i < lenght; i++) {
-		for (int j = 1; j < lenght - 1; j++) {
-			int tmp = array[i];
-			array[i] = array[j];
-			array[j] = tmp;
-		}
-	}
-
-	for (int i = 0; i < lenght; i++) {
-		printf("%d", array[i]);
-	}
-	printf("\n");
-}
-
-void clear(Stack& q) {
-	if (q.head == NULL) return;
-	for (ElementS* cur = q.head; cur != NULL; cur = cur->next)
-		q.head = q.head->next;
 }
 
 int main() {
