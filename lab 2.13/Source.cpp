@@ -33,7 +33,7 @@ void loopStack(int& lenght) {
 			evenOdd(q, lenght);
 			break;
 		case 5:
-			clear(q);
+			clear(q, lenght);
 			printf("Очистка прошла успешно\n");
 			break;
 		case 6:

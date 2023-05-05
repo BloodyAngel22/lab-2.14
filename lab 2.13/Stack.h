@@ -12,4 +12,4 @@ struct Stack {
 };
 
 void push(Stack& q, int d); int pull(Stack& q); void printQueue(const Stack& q);
-void reverseNumber(const Stack& q); void evenOdd(const Stack& q, int lenght); void clear(Stack& q);
+void reverseNumber(const Stack& q); void evenOdd(const Stack& q, int lenght); void clear(Stack& q, int& lenght);

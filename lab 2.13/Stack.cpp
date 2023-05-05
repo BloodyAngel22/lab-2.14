@@ -52,12 +52,10 @@ void evenOdd(const Stack& q, int lenght) {
 	for (int i = 0; cur != NULL; cur = cur->next, i++)
 		array[i] = cur->data;
 
-	for (int i = 0; i < lenght; i++) {
-		for (int j = 1; j < lenght - 1; j++) {
-			int tmp = array[i];
-			array[i] = array[j];
-			array[j] = tmp;
-		}
+	for (int i = 0; i < lenght - 2; i++) {
+		int tmp = array[i];
+		array[i] = array[i + 2];
+		array[i + 2] = tmp;
 	}
 	printf("Вывод: ");
 	for (int i = 0; i < lenght; i++) {
@@ -66,8 +64,9 @@ void evenOdd(const Stack& q, int lenght) {
 	printf("\n");
 }
 
-void clear(Stack& q) {
+void clear(Stack& q, int& lenght) {
 	if (q.head == NULL) return;
 	for (ElementS* cur = q.head; cur != NULL; cur = cur->next)
 		q.head = q.head->next;
+	lenght = 0;
 }
